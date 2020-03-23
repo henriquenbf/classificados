@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import br.com.classificados.dto.CategoriaDTO;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,6 +40,10 @@ public class Categoria implements Serializable {
         super();
         this.id = id;
         this.nome = nome;
+    }
+    
+    public CategoriaDTO toDto() {
+        return new CategoriaDTO(id, nome);
     }
 
 }

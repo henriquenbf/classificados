@@ -6,6 +6,7 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
+import br.com.classificados.domain.Categoria;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,5 +25,9 @@ public class CategoriaDTO implements Serializable {
     @NotEmpty(message = "Preenchimento obrigatório")
     @Length(min = 5, max = 80, message = "Deve possuir entre 5 e 80 caracteres")
     private String nome;
+    
+    public Categoria toEntity() {
+        return new Categoria(id, nome);
+    }
 
 }

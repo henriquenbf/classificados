@@ -36,6 +36,12 @@ public class ClassificadosApplication implements CommandLineRunner {
         
         Categoria catNotebooks = new Categoria(null, "Notebooks");
         Categoria catVideoGames = new Categoria(null, "Vídeo Games");
+        Categoria cat1 = new Categoria(null, "Carros");
+        Categoria cat2 = new Categoria(null, "Motos");
+        Categoria cat3 = new Categoria(null, "Apartamentos");
+        Categoria cat4 = new Categoria(null, "Móveis");
+        Categoria cat5 = new Categoria(null, "Eletrodomésticos");
+        Categoria cat6 = new Categoria(null, "Smartwatches");
         
         Produto prodNoteAsus = new Produto(null, "Notebook Asus Gamer", 2000D, SituacaoProduto.USADO);
         Produto prodPs4 = new Produto(null, "PS4", 1200D, SituacaoProduto.NOVO);
@@ -58,7 +64,7 @@ public class ClassificadosApplication implements CommandLineRunner {
         prodNoteLenovo.setUsuario(us2);
         
         usuarioRep.saveAll(Arrays.asList(us1, us2));
-        catRep.saveAll(Arrays.asList(catNotebooks, catVideoGames));
+        catRep.saveAll(Arrays.asList(catNotebooks, catVideoGames, cat1, cat2, cat3, cat4, cat5, cat6));
         prodRep.saveAll(Arrays.asList(prodNoteAsus, prodPs4, prodNoteLenovo));
         
     }
