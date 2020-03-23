@@ -10,36 +10,38 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import br.com.classificados.domain.Categoria;
-import br.com.classificados.dto.CategoriaDTO;
+import br.com.classificados.domain.Usuario;
+import br.com.classificados.dto.UsuarioDTO;
 import br.com.classificados.exceptions.DataIntegrityException;
 import br.com.classificados.exceptions.ObjectNotFoundException;
-import br.com.classificados.repositories.CategoriaRepository;
+import br.com.classificados.repositories.UsuarioRepository;
 
 @Service
-public class CategoriaService {
+public class UsuarioService {
 
     @Autowired
-    private CategoriaRepository repository;
+    private UsuarioRepository repository;
 
-    public Categoria find(Integer id) {
-        Optional<Categoria> categoriaOtp = repository.findById(id);
-        return categoriaOtp.orElseThrow(() -> new ObjectNotFoundException(String.format("Objeto com ID = %s não encontrado. Tipo = %s", id, Categoria.class.getName())));
+    public Usuario find(Integer id) {
+        Optional<Usuario> UsuarioOtp = repository.findById(id);
+        return UsuarioOtp.orElseThrow(() -> new ObjectNotFoundException(String.format("Objeto com ID = %s não encontrado. Tipo = %s", id, Usuario.class.getName())));
     }
 
-    public Categoria insert(Categoria obj) {
+    public Usuario insert(Usuario obj) {
         obj.setId(null);
         return repository.save(obj);
     }
 
-    public Categoria update(Categoria obj) {
-        Categoria entityDb = find(obj.getId());
+    public Usuario update(Usuario obj) {
+        Usuario entityDb = find(obj.getId());
         atualizaDadosDaEntidade(entityDb, obj);
         return repository.save(entityDb);
     }
 
-    private void atualizaDadosDaEntidade(Categoria entityDb, Categoria obj) {
+    private void atualizaDadosDaEntidade(Usuario entityDb, Usuario obj) {
         entityDb.setNome(obj.getNome());
+        entityDb.setSetor(obj.getSetor());
+        entityDb.setTelefone(obj.getTelefone());
     }
 
     public void delete(Integer id) {
@@ -47,21 +49,21 @@ public class CategoriaService {
         try {
             repository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityException("Não é possível excluir uma categoria que possui Produtos.");
+            throw new DataIntegrityException("Não é possível excluir uma Usuario que possui Usuarios.");
         }
     }
 
-    public List<Categoria> findAll() {
+    public List<Usuario> findAll() {
         return repository.findAll();
     }
 
-    public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+    public Page<Usuario> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
         return repository.findAll(pageRequest);
     }
 
-    public Categoria fromDTO(CategoriaDTO dto) {
-        return new Categoria(dto.getId(), dto.getNome());
+    public Usuario fromDTO(UsuarioDTO dto) {
+        return new Usuario(dto.getId(), dto.getNome(), dto.getSetor(), dto.getTelefone());
     }
 
 }

@@ -15,7 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class CategoriaDTO implements Serializable {
+public class UsuarioDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -24,5 +24,14 @@ public class CategoriaDTO implements Serializable {
     @NotEmpty(message = "Preenchimento obrigatório")
     @Length(min = 5, max = 80, message = "Deve possuir entre 5 e 80 caracteres")
     private String nome;
+
+    @NotEmpty(message = "Preenchimento obrigatório")
+    private String setor;
+    
+    @NotEmpty(message = "Preenchimento obrigatório")
+    private String telefone;
+    
+    private String email;
+    private String senha;
 
 }
