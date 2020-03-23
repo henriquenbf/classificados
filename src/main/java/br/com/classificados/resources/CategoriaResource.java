@@ -19,10 +19,6 @@ public class CategoriaResource {
     
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer id) {
-	    
-	    Categoria cat1 = new Categoria(1, "Notebooks");
-	    categoriaService.insert(cat1);
-	    
 	    Categoria entity = categoriaService.find(id);
 		return ResponseEntity.ok(entity);
 	}
