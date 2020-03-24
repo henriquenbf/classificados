@@ -56,9 +56,9 @@ public class CategoriaService {
         return repository.findAll().stream().map(Categoria::toDto).collect(Collectors.toList());
     }
 
-    public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+    public Page<CategoriaDTO> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-        return repository.findAll(pageRequest);
+        return repository.findAll(pageRequest).map(Categoria::toDto);
     }
 
 }

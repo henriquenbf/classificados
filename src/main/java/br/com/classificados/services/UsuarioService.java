@@ -1,5 +1,7 @@
 package br.com.classificados.services;
 
+import static java.util.Objects.nonNull;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +31,19 @@ public class UsuarioService {
 
     public Usuario insert(Usuario obj) {
         obj.setId(null);
+        validaDadosInsert(obj);
         return repository.save(obj);
+    }
+
+    private void validaDadosInsert(Usuario obj) {
+        // Deve ser alterado para um ConstraintValidator da entidade Usuario, pois trata-se de uma validação de atributo
+        Usuario usuarioComMesmoEmail = repository.findByEmail(obj.getEmail());
+
+        if (nonNull(usuarioComMesmoEmail)) {
+//            MensagemCampoInvalido msg = new MensagemCampoInvalido("email", "E-Mail já cadastrado para outro usuário");
+            throw new IllegalArgumentException("E-Mail já cadastrado para outro usuário");
+        }
+
     }
 
     public Usuario update(Usuario obj) {
@@ -42,6 +56,7 @@ public class UsuarioService {
         entityDb.setNome(obj.getNome());
         entityDb.setSetor(obj.getSetor());
         entityDb.setTelefone(obj.getTelefone());
+        entityDb.setEmail(obj.getEmail());
     }
 
     public void delete(Integer id) {

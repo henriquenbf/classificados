@@ -2,18 +2,16 @@ package br.com.classificados.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.com.classificados.domain.Produto;
-import br.com.classificados.domain.SituacaoProduto;
 import br.com.classificados.dto.ProdutoDTO;
-import br.com.classificados.exceptions.DataIntegrityException;
 import br.com.classificados.exceptions.ObjectNotFoundException;
 import br.com.classificados.repositories.ProdutoRepository;
 
@@ -47,24 +45,19 @@ public class ProdutoService {
 
     public void delete(Integer id) {
         find(id);
-        try {
-            repository.deleteById(id);
-        } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityException("Não é possível excluir uma Produto que possui Produtos.");
-        }
+        repository.deleteById(id);
     }
 
-    public List<Produto> findAll() {
-        return repository.findAll();
+    public List<ProdutoDTO> findAll() {
+        List<Produto> produtos = repository.findAll();
+        List<ProdutoDTO> produtosDtos = produtos.stream().map(Produto::toDto).collect(Collectors.toList());
+        return produtosDtos;
+        
     }
 
-    public Page<Produto> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+    public Page<ProdutoDTO> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-        return repository.findAll(pageRequest);
-    }
-
-    public Produto fromDTO(ProdutoDTO dto) {
-        return new Produto(dto.getId(), dto.getNome(), dto.getValor(), SituacaoProduto.getByCodigo(dto.getSituacao()));
+        return repository.findAll(pageRequest).map(Produto::toDto);
     }
 
 }

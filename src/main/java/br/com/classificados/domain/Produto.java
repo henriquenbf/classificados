@@ -1,5 +1,7 @@
 package br.com.classificados.domain;
 
+import static java.util.Objects.isNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import br.com.classificados.dto.ProdutoDTO;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +30,7 @@ import lombok.Setter;
 @Entity(name = "produto")
 public class Produto implements Serializable {
 
-    private static final long serialVersionUID = -4616523677625929350L;
+    private static final long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,7 +53,7 @@ public class Produto implements Serializable {
         this.id = id;
         this.nome = nome;
         this.valor = valor;
-        this.situacao = situacao.codigo;
+        this.situacao = isNull(situacao) ? null : situacao.codigo;
     }
 
     public SituacaoProduto getSituacao() {
@@ -59,6 +62,14 @@ public class Produto implements Serializable {
 
     public void setSituacao(SituacaoProduto situacao) {
         this.situacao = situacao.codigo;
+    }
+    
+    public void addCategoria(Categoria categoria) {
+        this.categorias.add(categoria);
+    }
+    
+    public ProdutoDTO toDto() {
+        return new ProdutoDTO(id, nome, valor, situacao);
     }
 
 }

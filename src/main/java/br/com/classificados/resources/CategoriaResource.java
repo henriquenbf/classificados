@@ -29,23 +29,31 @@ public class CategoriaResource {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Categoria> find(@PathVariable Integer id) {
+        
         Categoria entity = categoriaService.find(id);
         return ResponseEntity.ok(entity);
+        
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO dto) {
+        
         Categoria entity = categoriaService.insert(dto.toEntity());
+        
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(entity.getId()).toUri();
         return ResponseEntity.created(uri).build();
+        
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Void> update(@PathVariable Integer id, @Valid @RequestBody CategoriaDTO dto) {
+        
         Categoria obj = dto.toEntity();
         obj.setId(id);
         obj = categoriaService.update(obj);
+        
         return ResponseEntity.noContent().build();
+        
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -67,9 +75,9 @@ public class CategoriaResource {
             @RequestParam(value = "orderBy", defaultValue = "nome") String orderBy, 
             @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
         
-        Page<Categoria> categorias = categoriaService.findPage(page, linesPerPage, orderBy, direction);
+        Page<CategoriaDTO> categoriasDtos = categoriaService.findPage(page, linesPerPage, orderBy, direction);
         
-        return ResponseEntity.ok().body(categorias.map(Categoria::toDto));
+        return ResponseEntity.ok().body(categoriasDtos);
     }
 
 }
